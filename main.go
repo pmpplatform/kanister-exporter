@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
@@ -21,7 +20,7 @@ import (
 
 // Declare metrics
 var (
-	kanisterActionSets = prometheus.NewDesc("kanister_actionsets", "Kanister ActionSets status", []string{"name", "error", "progress"}, nil)
+	kanisterActionSets = prometheus.NewDesc("kanister_actionsets", "Kanister ActionSets status", []string{"name", "state", "error", "running", "progress"}, nil)
 )
 
 type kanisterCollector struct {
@@ -38,11 +37,17 @@ func (c kanisterCollector) Collect(metrics chan<- prometheus.Metric) {
 	if err != nil {
 		panic(err)
 	}
-	for actionset := range actionsets.Items {
-		fmt.Println(actionset)
-	}
+	for item := range actionsets.Items {
+		actionset := actionsets.Items[item]
 
-	//ArgoprojV1alpha1().Applications("argocd").List(context.Background(), metav1.ListOptions{})
+		metrics <- prometheus.MustNewConstMetric(kanisterActionSets, prometheus.GaugeValue, 1,
+			actionset.Name,
+			string(actionset.Status.State),
+			actionset.Status.Error.Message,
+			actionset.Status.Progress.RunningPhase,
+			actionset.Status.Progress.PercentCompleted,
+		)
+	}
 
 }
 
@@ -66,10 +71,12 @@ func main() {
 	}
 
 	collector := initCollector(config)
-	prometheus.MustRegister(collector)
+	r := prometheus.NewRegistry()
+	r.MustRegister(collector)
+	handler := promhttp.HandlerFor(r, promhttp.HandlerOpts{})
 
 	mux := http.DefaultServeMux
-	mux.Handle("/metrics", promhttp.Handler())
+	mux.Handle("/metrics", handler)
 	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("OK"))
