@@ -1,19 +1,48 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kanistor-exporter
+  name: kanister-exporter
   labels:
-    app: kanistor-exporter
+    app: kanister-exporter
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: kanistor-exporter
+      app: kanister-exporter
   template:
     metadata:
       labels:
-        app: kanistor-exporter
+        app: kanister-exporter
     spec:
+      serviceAccountName: kanister-exporter
       containers:
       - name: exporter
-        image: ps-registry-docker-hosted.publicdns.zone/ps-paas-infra/kanistor-exporter:v1
+        image: pmpplatform/kanister-exporter:v1
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kanister-exporter
+automountServiceAccountToken: true
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: read-pods
+subjects:
+- kind: Group
+  name: system:serviceaccounts:kanister
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: kanister-exporter-list
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: kanister-exporter-list
+rules:
+- apiGroups: ["cr.kanister.io"]
+  resources: ["actionsets"]
+  verbs: ["list"]
