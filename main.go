@@ -38,10 +38,8 @@ func (c kanisterCollector) Collect(metrics chan<- prometheus.Metric) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(actionsets)
 	for item := range actionsets.Items {
 		actionset := actionsets.Items[item]
-		fmt.Println(actionset)
 
 		metrics <- prometheus.MustNewConstMetric(kanisterActionSets, prometheus.GaugeValue, 1,
 			actionset.Name,
