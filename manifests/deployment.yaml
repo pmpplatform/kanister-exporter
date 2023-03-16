@@ -3,21 +3,24 @@ kind: Deployment
 metadata:
   name: kanister-exporter
   labels:
-    app: kanister-exporter
+    app.kubernetes.io/name: kanister-exporter
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: kanister-exporter
+      app.kubernetes.io/name: kanister-exporter
   template:
     metadata:
       labels:
-        app: kanister-exporter
+        app.kubernetes.io/name: kanister-exporter
     spec:
       serviceAccountName: kanister-exporter
       containers:
-      - name: exporter
-        image: pmpplatform/kanister-exporter:v1
+        - name: exporter
+          image: pmpplatform/kanister-exporter:v1.0.0
+          ports:
+          - name: metrics
+            containerPort: 9090
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -30,9 +33,9 @@ kind: RoleBinding
 metadata:
   name: read-pods
 subjects:
-- kind: Group
-  name: system:serviceaccounts:kanister
-  apiGroup: rbac.authorization.k8s.io
+  - kind: Group
+    name: system:serviceaccounts:kanister
+    apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: Role
   name: kanister-exporter-list
@@ -43,6 +46,20 @@ kind: Role
 metadata:
   name: kanister-exporter-list
 rules:
-- apiGroups: ["cr.kanister.io"]
-  resources: ["actionsets"]
-  verbs: ["list"]
+  - apiGroups: ["cr.kanister.io"]
+    resources: ["actionsets"]
+    verbs: ["list"]
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: kanister-exporter
+  labels:
+      app.kubernetes.io/name: kanister-exporter
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kanister-exporter
+  podMetricsEndpoints:
+  - port: metrics
+    path: /metrics
