@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
@@ -21,7 +20,7 @@ import (
 
 // Declare metrics
 var (
-	kanisterActionSets = prometheus.NewDesc("kanister_actionsets", "Kanister ActionSets status", []string{"name", "error", "running", "progress"}, nil)
+	kanisterActionSets = prometheus.NewDesc("kanister_actionsets", "Kanister ActionSets status", []string{"name", "state", "error", "running", "progress"}, nil)
 )
 
 type kanisterCollector struct {
@@ -43,6 +42,7 @@ func (c kanisterCollector) Collect(metrics chan<- prometheus.Metric) {
 
 		metrics <- prometheus.MustNewConstMetric(kanisterActionSets, prometheus.GaugeValue, 1,
 			actionset.Name,
+			string(actionset.Status.State),
 			actionset.Status.Error.Message,
 			actionset.Status.Progress.RunningPhase,
 			actionset.Status.Progress.PercentCompleted,
