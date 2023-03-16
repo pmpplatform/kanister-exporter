@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kanistor-exporter
+  labels:
+    app: kanistor-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kanistor-exporter
+  template:
+    metadata:
+      labels:
+        app: kanistor-exporter
+    spec:
+      containers:
+      - name: exporter
+        image: ps-registry-docker-hosted.publicdns.zone/ps-paas-infra/kanistor-exporter:v1
