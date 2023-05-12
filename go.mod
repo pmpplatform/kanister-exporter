@@ -66,5 +66,5 @@ require (
 	github.com/prometheus/procfs v0.8.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
-	k8s.io/client-go v0.26.2
+	k8s.io/client-go v11.0.0+incompatible
 )
