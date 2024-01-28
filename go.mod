@@ -58,7 +58,7 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/kanisterio/kanister v0.0.0-20230315064759-3c4b039f51b2
+	github.com/kanisterio/kanister/v9 v9.99.9-sirish3
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/pmpplatform/pzap v1.0.1
 	github.com/prometheus/client_model v0.3.0 // indirect
