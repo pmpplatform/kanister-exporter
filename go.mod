@@ -1,8 +1,12 @@
 module github.com/pmpplatform/kanister-exporter
 
-go 1.20
+go 1.25.0
 
-require github.com/prometheus/client_golang v1.14.0
+require (
+	github.com/prometheus/client_golang v1.24.1
+	go.uber.org/zap v1.24.0
+	k8s.io/apimachinery v0.26.2
+)
 
 require (
 	github.com/Masterminds/semver v1.5.0 // indirect
@@ -16,7 +20,7 @@ require (
 	github.com/go-openapi/swag v0.19.14 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/google/gnostic v0.5.7-v3refs // indirect
-	github.com/google/go-cmp v0.5.9 // indirect
+	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
@@ -32,11 +36,10 @@ require (
 	github.com/valyala/histogram v1.2.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
-	go.uber.org/zap v1.24.0 // indirect
-	golang.org/x/net v0.7.0 // indirect
-	golang.org/x/oauth2 v0.5.0 // indirect
-	golang.org/x/term v0.5.0 // indirect
-	golang.org/x/text v0.7.0 // indirect
+	golang.org/x/net v0.57.0 // indirect
+	golang.org/x/oauth2 v0.36.0 // indirect
+	golang.org/x/term v0.45.0 // indirect
+	golang.org/x/text v0.40.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
@@ -45,7 +48,6 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/api v0.26.2 // indirect
 	k8s.io/apiextensions-apiserver v0.26.1 // indirect
-	k8s.io/apimachinery v0.26.2 // indirect
 	k8s.io/klog/v2 v2.80.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20221012153701-172d655c2280 // indirect
 	k8s.io/utils v0.0.0-20221128185143-99ec85e7a448 // indirect
@@ -56,15 +58,15 @@ require (
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
-	github.com/cespare/xxhash/v2 v2.2.0 // indirect
+	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/kanisterio/kanister v0.0.0-20230315064759-3c4b039f51b2
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/pmpplatform/pzap v1.0.1
-	github.com/prometheus/client_model v0.3.0 // indirect
-	github.com/prometheus/common v0.40.0 // indirect
-	github.com/prometheus/procfs v0.8.0 // indirect
-	golang.org/x/sys v0.5.0 // indirect
-	google.golang.org/protobuf v1.28.1 // indirect
+	github.com/prometheus/client_model v0.6.2 // indirect
+	github.com/prometheus/common v0.70.1 // indirect
+	github.com/prometheus/procfs v0.21.1 // indirect
+	golang.org/x/sys v0.47.0 // indirect
+	google.golang.org/protobuf v1.36.11 // indirect
 	k8s.io/client-go v0.26.2
 )
